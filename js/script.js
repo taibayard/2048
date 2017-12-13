@@ -46,9 +46,9 @@ function random(min, max) {
     return Math.floor((Math.random() * max) + min);
 }
 
-function upKey() {
-     for (let i = 0; i < totalRows; i++) {
-        let z = document.getElementsByClassName("col" + i);
+function moveTiles(classType,tileHandler) {
+    for (let i = 0; i < totalRows; i++) {
+        let z = document.getElementsByClassName(classType + i);
         let w = []; //created a new variable to go around node list
         for (let o = 0; o < totalCols; o++) {
             if (z[o].getElementsByTagName("a")[0].innerText != "") {
@@ -56,66 +56,38 @@ function upKey() {
             }
         }
         let m = matchPairs(w);
-        m = whitespaceHandler(m);
-        console.log(m);
+        tileHandler(m);
         arrangeBoard(m, z);
     }
     addNewTile();
+}
+
+function upKey() {
+	moveTiles("col",function(m){
+		m = whitespaceHandler(m);
+	})
 }
 
 function downKey() {
-     for (let i = 0; i < totalRows; i++) {
-        let z = document.getElementsByClassName("col" + i);
-        let w = []; //created a new variable to go around node list
-        for (let o = 0; o < totalCols; o++) {
-            if (z[o].getElementsByTagName("a")[0].innerText != "") {
-                w.push(z[o].getElementsByTagName("a")[0].innerText);
-            }
-        }
-        let m = matchPairs(w);
-        m.reverse(); //use on right not left
+	moveTiles("col",function(m){
+        m.reverse();
         m = whitespaceHandler(m);
         m.reverse();
-        console.log(m);
-        arrangeBoard(m, z);
-    }
-    addNewTile();
+	});
 }
 
 function leftKey() {
-    for (let i = 0; i < totalRows; i++) {
-        let z = document.getElementsByClassName("row" + i);
-        let w = []; //created a new variable to go around node list
-        for (let o = 0; o < totalCols; o++) {
-            if (z[o].getElementsByTagName("a")[0].innerText != "") {
-                w.push(z[o].getElementsByTagName("a")[0].innerText);
-            }
-        }
-        let m = matchPairs(w);
-        m = whitespaceHandler(m);
-        console.log(m);
-        arrangeBoard(m, z);
-    }
-    addNewTile();
+	moveTiles("row",function(m){
+		m = whitespaceHandler(m);
+	})
 }
 
 function rightKey() {
-    for (let i = 0; i < totalRows; i++) {
-        let z = document.getElementsByClassName("row" + i);
-        let w = []; //created a new variable to go around node list
-        for (let o = 0; o < totalCols; o++) {
-            if (z[o].innerText != "") {
-                w.push(z[o].innerText);
-            }
-        }
-        let m = matchPairs(w);
-        m.reverse(); //use on right not left
+	moveTiles("row",function(m){
+        m.reverse();
         m = whitespaceHandler(m);
         m.reverse();
-        console.log(m);
-        arrangeBoard(m, z);
-    }
-    addNewTile();
+	});
 }
 
 function arrangeBoard(finalArr, el) {
