@@ -28,8 +28,9 @@ var matchPairs = function(arr) {
             o++;
         }
     }
-    arr.reverse();
-    //handles whitespace
+    return arr;
+}
+var whitespaceHandler = function(arr) {
     if (arr.length < 4) {
         let diff = 4 - arr.length;
         for (let i = 0; i < diff; i++) {
@@ -52,9 +53,7 @@ function upKey() {
 function downKey() {
 
 }
-
 function leftKey() {
-    addNewTile();
     for (let i = 0; i < totalRows; i++) {
         let z = document.getElementsByClassName("row" + i);
         let w = []; //created a new variable to go around node list
@@ -64,14 +63,14 @@ function leftKey() {
             }
         }
         let m = matchPairs(w);
-        m.reverse();
+        m = whitespaceHandler(m);
         console.log(m);
         arrangeBoard(m, z);
     }
+    addNewTile();
 }
 
 function rightKey() {
-    addNewTile();
     for (let i = 0; i < totalRows; i++) {
         let z = document.getElementsByClassName("row" + i);
         let w = []; //created a new variable to go around node list
@@ -81,10 +80,13 @@ function rightKey() {
             }
         }
         let m = matchPairs(w);
+        m.reverse();//use on right not left
+        m = whitespaceHandler(m);
         m.reverse();
         console.log(m);
         arrangeBoard(m, z);
     }
+    addNewTile();
 }
 
 function arrangeBoard(finalArr, el) {
@@ -105,7 +107,7 @@ function addNewTile() {
     let randomTile = random(0, tiles.length);
     let t = tiles[randomTile].getElementsByTagName("a")[0].innerText;
     if (t === undefined || t === "" || t === null) {
-    	console.log(tiles[randomTile]);
+        console.log(tiles[randomTile]);
         tiles[randomTile].getElementsByTagName("a")[0].innerText = "2";
         console.log("free tile");
     } else {
