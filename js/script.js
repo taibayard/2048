@@ -1,6 +1,34 @@
 let tiles = document.getElementsByClassName("tile");
 let totalRows = 4; //change this based on rows in html
 let totalCols = 4; //change this basd on the total cols
+//colors
+let colors = {
+	default:{
+		background:"rgba(238, 228, 218, 0.35)",
+		color:"#766e64"
+	},
+	2:{
+		background:"#eee4db",
+		color:"#766e64"
+	},
+	4:{
+		background:"#ede0c8",
+		color:"#766e64"
+	},
+	8:{
+		background:"#f3b278",
+		color:"#f9f6f2"
+	},
+	16:{
+		background:"#f59563",
+		color:"#f9f6f2"
+	},
+	32:{
+		background:"#f67b5e",
+		color:"#f9f6f2"
+	}
+}
+//end colors
 window.onkeyup = function(e) {
     e = e || window.event;
     console.log(e);
@@ -93,6 +121,16 @@ function rightKey() {
 function arrangeBoard(finalArr, el) {
     for (let i = 0; i < el.length; i++) {
         let inner = el[i].getElementsByTagName("a")[0];
+        switch(true){
+        	case finalArr[i] >=2:
+        		el[i].style.backgroundColor = colors[finalArr[i]].background;
+        		el[i].style.color = colors[finalArr[i]].color;
+        	break;
+        	default:
+        		el[i].style.backgroundColor = colors.default.background;
+        		el[i].style.color = colors.default.color;
+        	break;
+        }
         inner.innerText = finalArr[i];
     }
 }
@@ -101,7 +139,9 @@ function loadBoard() {
     let t1 = random(0, 15);
     let t2 = random(0, 15);
     tiles[t1].getElementsByTagName("a")[0].innerText = "2";
+    tiles[t1].setAttribute("style","background-color:"+colors[2].background+";color:"+colors[2].color+";");
     tiles[t2].getElementsByTagName("a")[0].innerText = "2";
+    tiles[t2].setAttribute("style","background-color:"+colors[2].background+";color:"+colors[2].color+";");
 }
 
 function addNewTile() {
@@ -110,6 +150,7 @@ function addNewTile() {
     if (t === undefined || t === "" || t === null) {
         console.log(tiles[randomTile]);
         tiles[randomTile].getElementsByTagName("a")[0].innerText = "2";
+        tiles[randomTile].setAttribute("style","background-color:"+colors[2].background+";color:"+colors[2].color+";");
         console.log("free tile");
     } else {
         let canAddTile = addTileCheck();
