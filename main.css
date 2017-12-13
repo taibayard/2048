@@ -26,4 +26,6 @@ main{
 	font-family: 'Source Sans Pro', sans-serif;
 	user-select: none;
 	position: absolute;
+	width: 100%;
+	left: 0;
 }
