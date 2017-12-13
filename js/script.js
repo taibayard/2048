@@ -1,7 +1,10 @@
 let tiles = document.getElementsByClassName("tile");
 let totalRows = 4; //change this based on rows in html
 let totalCols = 4; //change this basd on the total cols
+let score = 0;
+var scoreLabel = document.getElementById("score").getElementsByTagName("a")[0];
 //colors
+let currentSupportedColorMax = 32;
 let colors = {
 	default:{
 		background:"rgba(238, 228, 218, 0.35)",
@@ -53,6 +56,7 @@ var matchPairs = function(arr) {
         if (arr[o] === arr[o + 1] && isNaN(arr[o]) === false && arr[o] != "undefined") {
             console.log("matching pair of", arr[o]);
             arr.splice(o, 2, n * 2);
+            score += n*2;
             o++;
         }
     }
@@ -88,6 +92,7 @@ function moveTiles(classType,tileHandler) {
         arrangeBoard(m, z);
     }
     addNewTile();
+    scoreLabel.innerText = score;
 }
 
 function upKey() {
@@ -122,7 +127,7 @@ function arrangeBoard(finalArr, el) {
     for (let i = 0; i < el.length; i++) {
         let inner = el[i].getElementsByTagName("a")[0];
         switch(true){
-        	case finalArr[i] >=2:
+        	case finalArr[i] >=2 && finalArr[i] <= currentSupportedColorMax:
         		el[i].style.backgroundColor = colors[finalArr[i]].background;
         		el[i].style.color = colors[finalArr[i]].color;
         	break;

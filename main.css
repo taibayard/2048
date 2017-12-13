@@ -29,3 +29,11 @@ main{
 	width: 100%;
 	left: 0;
 }
+#score{
+	
+    position: absolute;
+    top: 0.5em;
+    left: 14em;
+    font-size: 3em;
+
+}
