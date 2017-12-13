@@ -47,19 +47,48 @@ function random(min, max) {
 }
 
 function upKey() {
-
+     for (let i = 0; i < totalRows; i++) {
+        let z = document.getElementsByClassName("col" + i);
+        let w = []; //created a new variable to go around node list
+        for (let o = 0; o < totalCols; o++) {
+            if (z[o].getElementsByTagName("a")[0].innerText != "") {
+                w.push(z[o].getElementsByTagName("a")[0].innerText);
+            }
+        }
+        let m = matchPairs(w);
+        m = whitespaceHandler(m);
+        console.log(m);
+        arrangeBoard(m, z);
+    }
+    addNewTile();
 }
 
 function downKey() {
-
+     for (let i = 0; i < totalRows; i++) {
+        let z = document.getElementsByClassName("col" + i);
+        let w = []; //created a new variable to go around node list
+        for (let o = 0; o < totalCols; o++) {
+            if (z[o].getElementsByTagName("a")[0].innerText != "") {
+                w.push(z[o].getElementsByTagName("a")[0].innerText);
+            }
+        }
+        let m = matchPairs(w);
+        m.reverse(); //use on right not left
+        m = whitespaceHandler(m);
+        m.reverse();
+        console.log(m);
+        arrangeBoard(m, z);
+    }
+    addNewTile();
 }
+
 function leftKey() {
     for (let i = 0; i < totalRows; i++) {
         let z = document.getElementsByClassName("row" + i);
         let w = []; //created a new variable to go around node list
         for (let o = 0; o < totalCols; o++) {
-            if (z[o].innerText != "") {
-                w.push(z[o].innerText);
+            if (z[o].getElementsByTagName("a")[0].innerText != "") {
+                w.push(z[o].getElementsByTagName("a")[0].innerText);
             }
         }
         let m = matchPairs(w);
@@ -80,7 +109,7 @@ function rightKey() {
             }
         }
         let m = matchPairs(w);
-        m.reverse();//use on right not left
+        m.reverse(); //use on right not left
         m = whitespaceHandler(m);
         m.reverse();
         console.log(m);
