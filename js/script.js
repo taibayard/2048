@@ -5,6 +5,7 @@ let score = 0;
 var scoreLabel = document.getElementById("score").getElementsByTagName("a")[0];
 let lastMove; //contains string with the last used key
 let lctLoaction = null;
+let gameOver = false;
 //colors
 let currentSupportedColorMax = 256;
 let colors = {
@@ -131,21 +132,35 @@ function moveTiles(classType, tileHandler, key) {
         tileHandler(m);
         arrangeBoard(m, z);
     }
-    console.log("lct=",lctLoaction,"\r\n div=",document.getElementById("lastCreatedTile"))
-    if (key != lastMove) {
-        addNewTile();
-    } else {
-        //need to check if there is a tile to be moved
-        console.log("check available moves");
-        if (lctLoaction === document.getElementById("lastCreatedTile")) {
-            console.log("last created tile was not moved");
-        } else {
+    let goc = gameOverCheck();
+    if (goc === false || gameOver === false) {
+        if (key != lastMove) {
             addNewTile();
-            console.log("lastCreatedTile was moved");
+        } else {
+            //need to check if there is a tile to be moved
+            console.log("check available moves");
+            if (lctLoaction === document.getElementById("lastCreatedTile")) {
+                console.log("last created tile was not moved");
+                console.log(gameOver);
+            } else {
+                addNewTile();
+                console.log("lastCreatedTile was moved");
+            }
         }
+    } else {
+        alert("game over");
     }
 
     scoreLabel.innerText = score;
+}
+
+var gameOverCheck = function() {
+    if (lctLoaction === document.getElementById("lastCreatedTile")) {
+        console.log(gameOver);
+        return true;
+    } else {
+        return false;
+    }
 }
 
 function upKey(k) {
@@ -200,8 +215,8 @@ function arrangeBoard(finalArr, el) {
 }
 
 function loadBoard() {
-addNewTile();
-addNewTile();
+    addNewTile();
+    addNewTile();
 }
 
 function addNewTile() {
@@ -226,6 +241,7 @@ function addNewTile() {
             addNewTile();
         } else {
             console.log("check for loss");
+            gameOver = true;
             //check for loss here.
         }
     }
