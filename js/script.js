@@ -7,7 +7,7 @@ let lastMove; //contains string with the last used key
 let lctLoaction = null;
 let gameOver = false;
 //colors
-let currentSupportedColorMax = 256;
+let currentSupportedColorMax = 512;
 let colors = {
         default: {
             background: "rgba(238, 228, 218, 0.35)",
@@ -45,6 +45,21 @@ let colors = {
             background: "#edcc61",
             color: "#f9f6f2",
             boxshadow: "0 0 30px 10px rgba(243, 215, 116, 0.31746), inset 0 0 0 1px rgba(255, 255, 255, 0.19048)"
+        },
+        512:{
+        	background:"#edc850",
+        	color:"#f9f6f2",
+        	boxshadow:"0 0 30px 10px rgba(243, 215, 116, 0.39683), inset 0 0 0 1px rgba(255, 255, 255, 0.2381)"
+        },
+        1024:{
+        	    color: "#f9f6f2",
+    			background: "#edc53f",
+    			boxshadow: "0 0 30px 10px rgba(243, 215, 116, 0.47619), inset 0 0 0 1px rgba(255, 255, 255, 0.28571)"
+        },
+        2048:{
+        	color: "#f9f6f2",
+    		background: "#edc22e",
+    		boxshadow: "0 0 30px 10px rgba(243, 215, 116, 0.55556), inset 0 0 0 1px rgba(255, 255, 255, 0.33333)"
         }
     }
     //end colors
@@ -122,6 +137,8 @@ function moveTiles(classType, tileHandler, key) {
         let w = []; //created a new variable to go around node list
         for (let o = 0; o < totalCols; o++) {
             let a = z[o].getElementsByTagName("a")[0];
+            z[o].setAttribute("style","opacity:0;");
+            console.log(z[o].style);
             if (a.innerText != "" && a.getAttribute("id") != "lastCreatedTile") {
                 w.push(a.innerText);
             } else if (a.getAttribute("id") === "lastCreatedTile") {
@@ -133,11 +150,10 @@ function moveTiles(classType, tileHandler, key) {
         arrangeBoard(m, z);
     }
     let goc = gameOverCheck();
-    if (goc === false || gameOver === false) {
+    if (goc === false || gameOver === false || lastMove=== null) {
         if (key != lastMove) {
             addNewTile();
         } else {
-            //need to check if there is a tile to be moved
             console.log("check available moves");
             if (lctLoaction === document.getElementById("lastCreatedTile")) {
                 console.log("last created tile was not moved");
@@ -153,7 +169,6 @@ function moveTiles(classType, tileHandler, key) {
 
     scoreLabel.innerText = score;
 }
-
 var gameOverCheck = function() {
     if (lctLoaction === document.getElementById("lastCreatedTile")) {
         console.log(gameOver);
@@ -231,8 +246,9 @@ function addNewTile() {
         tiles[randomTile].getElementsByTagName("a")[0].setAttribute("id", "lastCreatedTile");
         tiles[randomTile].getElementsByTagName("a")[0].innerText = "2";
         lctLoaction = tiles[randomTile].getElementsByTagName("a")[0];
-        tiles[randomTile].setAttribute("style", "background-color:" + colors[2].background + ";color:" + colors[2].color + ";");
+        tiles[randomTile].setAttribute("style", "background-color:" + colors[2].background + ";color:" + colors[2].color + "; animation: appear 200ms ease 100ms;animation-fill-mode: backwards;");
         console.log("free tile");
+        gameOver = false;
     } else {
         let canAddTile = addTileCheck();
         if (canAddTile === true) {
