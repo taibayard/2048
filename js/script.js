@@ -7,10 +7,9 @@ let lastMove; //contains string with the last used key
 let lctLoaction = null;
 let gameOver = false;
 //colors
-let currentSupportedColorMax = 512;
 let colors = {
         default: {
-            background: "rgba(238, 228, 218, 0.35)",
+            background: "unset",
             color: "#766e64"
         },
         2: {
@@ -137,7 +136,7 @@ function moveTiles(classType, tileHandler, key) {
         let w = []; //created a new variable to go around node list
         for (let o = 0; o < totalCols; o++) {
             let a = z[o].getElementsByTagName("a")[0];
-            z[o].setAttribute("style","opacity:0;");
+            a.setAttribute("style","opacity:0;");
             console.log(z[o].style);
             if (a.innerText != "" && a.getAttribute("id") != "lastCreatedTile") {
                 w.push(a.innerText);
@@ -216,13 +215,13 @@ function arrangeBoard(finalArr, el) {
         }
         switch (true) {
             case finalArr[i] >= 2 && finalArr[i] <= 128:
-                el[i].setAttribute("style", "background-color:" + colors[finalArr[i]].background + ";color:" + colors[finalArr[i]].color + ";");
+                el[i].getElementsByTagName("a")[0].setAttribute("style", "background-color:" + colors[finalArr[i]].background + ";color:" + colors[finalArr[i]].color + ";");
                 break;
             case finalArr[i] >= 256:
-                el[i].setAttribute("style", "background-color:" + colors[finalArr[i]].background + ";color:" + colors[finalArr[i]].color + ";box-shadow:" + colors[finalArr[i]].boxshadow + ";");
+                el[i].getElementsByTagName("a")[0].setAttribute("style", "background-color:" + colors[finalArr[i]].background + ";color:" + colors[finalArr[i]].color + ";box-shadow:" + colors[finalArr[i]].boxshadow + ";");
                 break;
             default:
-                el[i].setAttribute("style", "background-color:" + colors.default.background + ";color:" + colors.default.color + ";");
+                el[i].getElementsByTagName("a")[0].setAttribute("style", "background-color:" + colors.default.background + ";color:" + colors.default.color + ";");
                 break;
         }
         inner.innerText = finalArr[i];
@@ -246,7 +245,7 @@ function addNewTile() {
         tiles[randomTile].getElementsByTagName("a")[0].setAttribute("id", "lastCreatedTile");
         tiles[randomTile].getElementsByTagName("a")[0].innerText = "2";
         lctLoaction = tiles[randomTile].getElementsByTagName("a")[0];
-        tiles[randomTile].setAttribute("style", "background-color:" + colors[2].background + ";color:" + colors[2].color + "; animation: appear 200ms ease 100ms;animation-fill-mode: backwards;");
+        tiles[randomTile].getElementsByTagName("a")[0].setAttribute("style", "background-color:" + colors[2].background + ";color:" + colors[2].color + "; animation: appear 200ms ease 100ms;animation-fill-mode: backwards;");
         console.log("free tile");
         gameOver = false;
     } else {
