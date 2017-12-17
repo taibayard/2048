@@ -1,5 +1,6 @@
 html,body{
 	margin:0;
+	background-color: whitesmoke;
 }
 main{
 	width: 650px;
@@ -7,7 +8,7 @@ main{
 	background-color: #bbada0;
 	position: relative;
 	left: 25em;
-	top: 8em;
+	top: 14em;
 	border-radius: 5px;
 }
 .tile{
@@ -38,6 +39,7 @@ main{
 	font-family: 'Raleway', sans-serif;
 	position: absolute;
 	top: 0;
+	margin-top: 4em;
 }
 #score:before{
 	content:"Score : ";
