@@ -126,10 +126,9 @@ function addNewTile() {
     let randomTile = random(0, tiles.length);
     let t = tiles[randomTile].getElementsByTagName("a")[0].innerText;
     if (t === undefined || t === "" || t === null) {
-        try {
-            document.getElementById("lastCreatedTile").removeAttribute("id");
-        } catch (e) {
-
+        let lctEl  = document.getElementById("lastCreatedTile");
+        if(lctEl != null){
+            lctEl.removeAttribute("id");
         }
         tiles[randomTile].getElementsByTagName("a")[0].setAttribute("id", "lastCreatedTile");
         tiles[randomTile].getElementsByTagName("a")[0].innerText = "2";
