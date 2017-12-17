@@ -2,7 +2,7 @@
 <html>
 <head>
 	<title>2048</title>
-	<link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro|Raleway" rel="stylesheet">
 	<link rel="stylesheet" type="text/css" href="main.css">
 	<script type="text/javascript" src="js/checks.js"></script>
 	<script type="text/javascript" src = "js/tile-move.js"></script>
@@ -58,7 +58,13 @@
 			<a></a>
 		</div>
 	</main>
-	<div id="score"><a>0</a></div>
+	<div id="score-wrapper">
+		<div id="high-score"><a>0</a></div>
+		<br>
+		<div id="score"><a>0</a></div>
+	</div>
+	
+	<script type="text/javascript" src ="js/storage.js"></script>
 	<script type="text/javascript" src="js/script.js"></script>
 </body>
 </html>

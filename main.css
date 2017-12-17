@@ -32,13 +32,26 @@ main{
 	left: 0;
 	border-radius: 4.5px;
 }
+#score-wrapper{
+	width:100%;
+	text-align: center;
+	font-family: 'Raleway', sans-serif;
+	position: absolute;
+	top: 0;
+}
+#score:before{
+	content:"Score : ";
+}
 #score{
-
-    position: absolute;
-    top: 0.5em;
-    left: 14em;
-    font-size: 3em;
-
+	font-size: 3em;
+	display: inline-block;
+}
+#high-score:before{
+	content:"Highscore : ";
+}
+#high-score{
+	display: inline-block;
+	font-size: 3em;
 }
 @keyframes appear {
   0% {

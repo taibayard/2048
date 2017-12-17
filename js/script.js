@@ -153,4 +153,5 @@ window.onload = function() {
     //adds two new tiles to the board on load
     addNewTile();
     addNewTile();
+    setHighscore(score);
 }

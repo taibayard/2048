@@ -53,6 +53,7 @@ function moveTiles(classType, tileHandler, key) {
         addNewTile();
     }
     scoreLabel.innerText = score;
+    setHighscore(score);
 }
 function arrangeBoard(finalArr, el) {
     for (let i = 0; i < el.length; i++) {
