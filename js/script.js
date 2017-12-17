@@ -5,6 +5,8 @@ let score = 0;
 var scoreLabel = document.getElementById("score").getElementsByTagName("a")[0];
 let lastMove; //contains string with the last used key
 let lctLoaction = null;
+let checkedMoves = false;
+let gameWon = false;
 let gameOver = false;
 //colors
 let colors = {
@@ -45,27 +47,32 @@ let colors = {
             color: "#f9f6f2",
             boxshadow: "0 0 30px 10px rgba(243, 215, 116, 0.31746), inset 0 0 0 1px rgba(255, 255, 255, 0.19048)"
         },
-        512:{
-        	background:"#edc850",
-        	color:"#f9f6f2",
-        	boxshadow:"0 0 30px 10px rgba(243, 215, 116, 0.39683), inset 0 0 0 1px rgba(255, 255, 255, 0.2381)"
+        512: {
+            background: "#edc850",
+            color: "#f9f6f2",
+            boxshadow: "0 0 30px 10px rgba(243, 215, 116, 0.39683), inset 0 0 0 1px rgba(255, 255, 255, 0.2381)"
         },
-        1024:{
-        	    color: "#f9f6f2",
-    			background: "#edc53f",
-    			boxshadow: "0 0 30px 10px rgba(243, 215, 116, 0.47619), inset 0 0 0 1px rgba(255, 255, 255, 0.28571)"
+        1024: {
+            color: "#f9f6f2",
+            background: "#edc53f",
+            boxshadow: "0 0 30px 10px rgba(243, 215, 116, 0.47619), inset 0 0 0 1px rgba(255, 255, 255, 0.28571)"
         },
-        2048:{
-        	color: "#f9f6f2",
-    		background: "#edc22e",
-    		boxshadow: "0 0 30px 10px rgba(243, 215, 116, 0.55556), inset 0 0 0 1px rgba(255, 255, 255, 0.33333)"
+        2048: {
+            color: "#f9f6f2",
+            background: "#edc22e",
+            boxshadow: "0 0 30px 10px rgba(243, 215, 116, 0.55556), inset 0 0 0 1px rgba(255, 255, 255, 0.33333)"
         }
-    }
+}
     //end colors
 window.onkeyup = function(e) {
     e = e || window.event;
-    console.log(e);
     switch (true) {
+        case gameWon === true:
+        alert("game won");
+        break;
+        case gameOver === true:
+        alert("game over");
+        break;
         case e.key === "ArrowUp":
             upKey(e.key);
             lastMove = e.key;
@@ -97,19 +104,18 @@ var matchPairs = function(arr) {
                 arr.splice(o, 2, n * 2);
             }
             score += n * 2;
+            if(n*2 == 2048){
+                gameWon = true;
+            }
             lastMove = null;
         }
     }
     return arr;
 }
 var checkLct = function(e) {
-    if (e != undefined && e != null) {
-        if (e.indexOf("lct") != -1) {
-            return e.replace("lct", "");
-        } else {
-            return e;
-        }
-    } else {
+    if (e != undefined && e != null && e.indexOf("lct") != -1) {
+        return e.replace("lct", "");
+    }else{
         return e;
     }
 }
@@ -119,7 +125,6 @@ var whitespaceHandler = function(arr) {
         for (let i = 0; i < diff; i++) {
             arr.push("");
         }
-        console.log(arr);
         return arr;
     } else {
         return arr;
@@ -136,8 +141,7 @@ function moveTiles(classType, tileHandler, key) {
         let w = []; //created a new variable to go around node list
         for (let o = 0; o < totalCols; o++) {
             let a = z[o].getElementsByTagName("a")[0];
-            a.setAttribute("style","opacity:0;");
-            console.log(z[o].style);
+            a.setAttribute("style", "opacity:0;");
             if (a.innerText != "" && a.getAttribute("id") != "lastCreatedTile") {
                 w.push(a.innerText);
             } else if (a.getAttribute("id") === "lastCreatedTile") {
@@ -148,32 +152,68 @@ function moveTiles(classType, tileHandler, key) {
         tileHandler(m);
         arrangeBoard(m, z);
     }
-    let goc = gameOverCheck();
-    if (goc === false || gameOver === false || lastMove=== null) {
-        if (key != lastMove) {
-            addNewTile();
-        } else {
-            console.log("check available moves");
-            if (lctLoaction === document.getElementById("lastCreatedTile")) {
-                console.log("last created tile was not moved");
-                console.log(gameOver);
-            } else {
-                addNewTile();
-                console.log("lastCreatedTile was moved");
-            }
-        }
+    if (key != lastMove) {
+        addNewTile();
     } else {
-        alert("game over");
+        console.log("check available moves");
+        if (lctLoaction === document.getElementById("lastCreatedTile")) {
+            console.log("last created tile was not moved");
+        } else {
+            addNewTile();
+            console.log("lastCreatedTile was moved");
+        }
     }
 
     scoreLabel.innerText = score;
 }
-var gameOverCheck = function() {
-    if (lctLoaction === document.getElementById("lastCreatedTile")) {
-        console.log(gameOver);
-        return true;
-    } else {
-        return false;
+var checkRows = function() {
+    for (let i = 0; i < totalRows; i++) {
+        let z = document.getElementsByClassName("row" + i);
+        for (let o = 0; o < totalCols; o++) {
+            try {
+                let current = z[o].getElementsByTagName("a")[0].innerText;
+                let next = z[o + 1].getElementsByTagName("a")[0].innerText;
+                if (current == next) {
+                    return true;
+                }
+            } catch (e) {
+                //do nothing
+            }
+        }
+    }
+}
+var checkCols = function() {
+    for (let i = 0; i < totalCols; i++) {
+        let z = document.getElementsByClassName("col" + i);
+        for (let o = 0; o < totalRows; o++) {
+            try {
+                let current = z[o].getElementsByTagName("a")[0].innerText;
+                let next = z[o + 1].getElementsByTagName("a")[0].innerText;
+                if (current == next) {
+                    return true;
+                }
+            } catch (e) {
+                //do nothing
+            }
+        }
+    }
+}
+
+function gameOverCheck() {
+    //checked moves will prevent loops where they are not needed
+    if (checkedMoves === false) {
+        //checks rows then columns if there are no pairs on rows
+        let r = checkRows();
+        let c = checkCols();
+        if (c === true || r === true) {
+            console.warn("still moves to be made");
+            checkedMoves = true;
+        } else {
+            gameOver = true;
+            checkedMoves = true;
+        }
+    }else{
+        console.warn("Grid has already been checked");
     }
 }
 
@@ -247,7 +287,8 @@ function addNewTile() {
         lctLoaction = tiles[randomTile].getElementsByTagName("a")[0];
         tiles[randomTile].getElementsByTagName("a")[0].setAttribute("style", "background-color:" + colors[2].background + ";color:" + colors[2].color + "; animation: appear 200ms ease 100ms;animation-fill-mode: backwards;");
         console.log("free tile");
-        gameOver = false;
+        lastMove = null; //unlocks lastMove so we can make the same move twice
+        checkedMoves = false;
     } else {
         let canAddTile = addTileCheck();
         if (canAddTile === true) {
@@ -255,9 +296,7 @@ function addNewTile() {
             console.log("can add tile");
             addNewTile();
         } else {
-            console.log("check for loss");
-            gameOver = true;
-            //check for loss here.
+            gameOverCheck();
         }
     }
 }
