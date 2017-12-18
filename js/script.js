@@ -3,6 +3,7 @@ let totalRows = 4; //change this based on rows in html
 let totalCols = 4; //change this basd on the total cols
 let score = 0;
 var scoreLabel = document.getElementById("score").getElementsByTagName("a")[0];
+let playAgainBtn = document.getElementById("play-again");
 let lastMove; //contains string with the last used key
 let lctLoaction = null;
 let checkedMoves = false;
@@ -68,10 +69,16 @@ window.onkeyup = function(e) {
     e = e || window.event;
     switch (true) {
         case gameWon === true:
-            alert("game won");
+            document.getElementById("end-text").style.opacity = "1";
+            document.getElementById("end-text").style.visibility = "visible";
+            document.getElementById("result-text").innerText = "You Win";
+            document.getElementById("end-text").style.display = "block";
             break;
         case gameOver === true:
-            alert("game over");
+            document.getElementById("end-text").style.opacity = "1";
+            document.getElementById("end-text").style.visibility = "visible";
+            document.getElementById("result-text").innerText = "You Lose";
+            document.getElementById("end-text").style.display = "block";
             break;
         case e.key === "ArrowUp":
             upKey(e.key);
@@ -91,6 +98,7 @@ window.onkeyup = function(e) {
             break;
     }
 }
+
 function random(min, max) {
     return Math.floor((Math.random() * max) + min);
 }
@@ -122,12 +130,13 @@ function rightKey(k) {
         m.reverse();
     }, k);
 }
+
 function addNewTile() {
     let randomTile = random(0, tiles.length);
     let t = tiles[randomTile].getElementsByTagName("a")[0].innerText;
     if (t === undefined || t === "" || t === null) {
-        let lctEl  = document.getElementById("lastCreatedTile");
-        if(lctEl != null){
+        let lctEl = document.getElementById("lastCreatedTile");
+        if (lctEl != null) {
             lctEl.removeAttribute("id");
         }
         tiles[randomTile].getElementsByTagName("a")[0].setAttribute("id", "lastCreatedTile");
@@ -153,4 +162,22 @@ window.onload = function() {
     addNewTile();
     addNewTile();
     setHighscore(score);
+    document.getElementById("play-again").addEventListener("click", function() {
+        console.log("FIRED");
+        score = 0;
+        scoreLabel.innerText = "0";
+        lastMove; //contains string with the last used key
+        lctLoaction = null;
+        checkedMoves = false;
+        gameWon = false;
+        gameOver = false;
+        for (let i = 0; i < tiles.length; i++) {
+            tiles[i].getElementsByTagName("a")[0].innerText = "";
+            tiles[i].getElementsByTagName("a")[0].setAttribute("style", "background-color:" + colors.default.background + ";color:" + colors.default.color + ";");
+        }
+        document.getElementById("end-text").style.opacity = "0";
+        document.getElementById("end-text").style.visibility = "hidden";
+        document.getElementById("result-text").innerText = "";
+        document.getElementById("end-text").style.display = "none";
+    })
 }

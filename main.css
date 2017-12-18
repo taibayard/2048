@@ -72,3 +72,34 @@ main{
     transform: scale(1); 
 } 
 }
+#end-text{
+	display: none;
+	opacity: 0;
+	visibility: hidden;
+	width:100%;
+	height:100%;
+	background-color: #808080ad;
+	position: absolute;
+	top: 0;
+	text-align: center;
+	transition: all 2s linear;
+}
+#play-again{
+	border: none;
+	font-size: 4em;
+	padding: 0.5em;
+	border-radius: 17px;
+	background-color: beige;
+	color: grey;
+	position: relative;
+	top: 4em;
+	cursor:pointer;
+}
+#result-text{
+	color: white;
+	font-size: 4em;
+	position: ABSOLUTE;
+	left: 32%;
+	top: 15%;
+	font-weight: bold;
+}
