@@ -1,17 +1,9 @@
-var addTileCheck = function(){
+var addTileCheck = function() {
     for (let i = 0; i < tiles.length; i++) {
         let t = tiles[i].getElementsByTagName("a")[0].innerText;
         if (t === undefined || t === "" || t === null) {
             return true;
-            break;
         }
-    }
-}
-var checkLct = function(e) {
-    if (e != undefined && e != null && e.indexOf("lct") != -1) {
-        return e.replace("lct", "");
-    } else {
-        return e;
     }
 }
 var checkGrid = function() {
@@ -30,19 +22,32 @@ var checkGrid = function() {
     }
     return false;
 }
+
 function gameOverCheck() {
     //checked moves will prevent loops where they are not needed
     if (checkedMoves === false) {
-        //checks rows then columns if there are no pairs on rows
         let movesLeft = checkGrid();
         if (movesLeft) {
-            console.warn("still moves to be made");
+            //still moves to be made
             checkedMoves = true;
         } else {
+            //player lost
             gameOver = true;
             checkedMoves = true;
         }
-    } else {
-        console.warn("Grid has already been checked");
+    }
+    //else grid has already been checked
+}
+
+function checkTileMove() {
+    newGrid = [];
+    for (let i = 0; i < tiles.length; i++) {
+        let t = tiles[i].getElementsByTagName("a")[0].textContent;
+        newGrid.push(t);
+    }
+    if (grid.toString() != newGrid.toString()) {
+        addNewTile();
+    }else{
+        gameOverCheck();
     }
 }

@@ -1,15 +1,14 @@
-let tiles = document.getElementsByClassName("tile");
+let tiles = document.getElementsByClassName("tile"); //contains all the tiles
 let totalRows = 4; //change this based on rows in html
 let totalCols = 4; //change this basd on the total cols
 let score = 0;
 var scoreLabel = document.getElementById("score").getElementsByTagName("a")[0];
 let playAgainBtn = document.getElementById("play-again");
-let lastMove; //contains string with the last used key
-let lctLoaction = null;
-let checkedMoves = false;
+let checkedMoves = false; //prevents unnecessary loops when no data has changed on grid
 let gameWon = false;
 let gameOver = false;
-//colors
+let grid = []; //keeps track of tiles before a move is made *compared against newGrid*
+//colors for tiles 
 let colors = {
         default: {
             background: "unset",
@@ -65,9 +64,11 @@ let colors = {
         }
     }
     //end colors
+//handles key press
 window.onkeyup = function(e) {
     e = e || window.event;
     switch (true) {
+        //checking for arrow keys / win loss
         case gameWon === true:
             document.getElementById("end-text").style.opacity = "1";
             document.getElementById("end-text").style.visibility = "visible";
@@ -81,20 +82,16 @@ window.onkeyup = function(e) {
             document.getElementById("end-text").style.display = "block";
             break;
         case e.key === "ArrowUp":
-            upKey(e.key);
-            lastMove = e.key;
+            upKey();
             break;
         case e.key === "ArrowDown":
-            downKey(e.key);
-            lastMove = e.key;
+            downKey();
             break;
         case e.key === "ArrowLeft":
-            leftKey(e.key);
-            lastMove = e.key;
+            leftKey();
             break;
         case e.key === "ArrowRight":
-            rightKey(e.key);
-            lastMove = e.key;
+            rightKey();
             break;
     }
 }
@@ -102,82 +99,82 @@ window.onkeyup = function(e) {
 function random(min, max) {
     return Math.floor((Math.random() * max) + min);
 }
-
-function upKey(k) {
+//key handlers
+function upKey() {
     moveTiles("col", function(m) {
         m = whitespaceHandler(m);
-    }, k)
+    })
 }
 
-function downKey(k) {
+function downKey() {
     moveTiles("col", function(m) {
         m.reverse();
         m = whitespaceHandler(m);
         m.reverse();
-    }, k);
+    });
 }
 
-function leftKey(k) {
+function leftKey() {
     moveTiles("row", function(m) {
         m = whitespaceHandler(m);
-    }, k)
+    });
 }
 
-function rightKey(k) {
+function rightKey() {
     moveTiles("row", function(m) {
         m.reverse();
         m = whitespaceHandler(m);
         m.reverse();
-    }, k);
+    });
 }
-
+//will handle all tile creations here
 function addNewTile() {
+    //picking random tile on grid for the new tile to be placed
     let randomTile = random(0, tiles.length);
+    //getting data from random tile (if it has data it's not a free tile;need to get a new random tile)
     let t = tiles[randomTile].getElementsByTagName("a")[0].innerText;
+    //checking if tile is open
     if (t === undefined || t === "" || t === null) {
-        let lctEl = document.getElementById("lastCreatedTile");
-        if (lctEl != null) {
-            lctEl.removeAttribute("id");
-        }
-        tiles[randomTile].getElementsByTagName("a")[0].setAttribute("id", "lastCreatedTile");
         tiles[randomTile].getElementsByTagName("a")[0].innerText = "2";
-        lctLoaction = tiles[randomTile].getElementsByTagName("a")[0];
         tiles[randomTile].getElementsByTagName("a")[0].setAttribute("style", "background-color:" + colors[2].background + ";color:" + colors[2].color + "; animation: appear 200ms ease 100ms;animation-fill-mode: backwards;");
-        console.log("free tile");
-        lastMove = null; //unlocks lastMove so we can make the same move twice
-        checkedMoves = false;
-    } else {
-        let canAddTile = addTileCheck();
-        if (canAddTile === true) {
-            //keep generating new tiles...
-            console.log("can add tile");
-            addNewTile();
-        } else {
-            gameOverCheck();
+        //getting new grid
+        grid = [];
+        for (let i = 0; i < tiles.length; i++) {
+            let t = tiles[i].getElementsByTagName("a")[0].textContent;
+            grid.push(t);
         }
+        //grid has changed so moves will need to be checked again.
+        checkedMoves = false;
+    } else if(addTileCheck) {
+        //try again for open space
+        addNewTile();
     }
 }
+//creates 2 new tiles on load and adds play again listener
 window.onload = function() {
     //adds two new tiles to the board on load
     addNewTile();
     addNewTile();
     setHighscore(score);
     document.getElementById("play-again").addEventListener("click", function() {
-        console.log("FIRED");
+        //resetting variables
         score = 0;
         scoreLabel.innerText = "0";
-        lastMove; //contains string with the last used key
-        lctLoaction = null;
         checkedMoves = false;
         gameWon = false;
         gameOver = false;
+        //resetting tiles style
         for (let i = 0; i < tiles.length; i++) {
             tiles[i].getElementsByTagName("a")[0].innerText = "";
             tiles[i].getElementsByTagName("a")[0].setAttribute("style", "background-color:" + colors.default.background + ";color:" + colors.default.color + ";");
         }
+        //resetting tiles text / hiding end game text
         document.getElementById("end-text").style.opacity = "0";
         document.getElementById("end-text").style.visibility = "hidden";
         document.getElementById("result-text").innerText = "";
         document.getElementById("end-text").style.display = "none";
+        //adding starter tiles
+        addNewTile();
+        addNewTile();
     })
 }
