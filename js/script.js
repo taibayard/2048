@@ -64,7 +64,7 @@ let colors = {
         }
     }
     //end colors
-//handles key press
+    //handles key press
 window.onkeyup = function(e) {
     e = e || window.event;
     switch (true) {
@@ -108,9 +108,9 @@ function upKey() {
 
 function downKey() {
     moveTiles("col", function(m) {
-        m.reverse();
+        m.reverse();// for prepending whitespace
         m = whitespaceHandler(m);
-        m.reverse();
+        m.reverse(); //back to original format
     });
 }
 
@@ -122,9 +122,9 @@ function leftKey() {
 
 function rightKey() {
     moveTiles("row", function(m) {
-        m.reverse();
+        m.reverse();// for prepending whitespace
         m = whitespaceHandler(m);
-        m.reverse();
+        m.reverse();//back to original format
     });
 }
 //will handle all tile creations here
@@ -145,7 +145,7 @@ function addNewTile() {
         }
         //grid has changed so moves will need to be checked again.
         checkedMoves = false;
-    } else if(addTileCheck) {
+    } else if (addTileCheck) {
         //try again for open space
         addNewTile();
     }

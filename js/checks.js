@@ -1,3 +1,4 @@
+//checking if theres still tiles open
 var addTileCheck = function() {
     for (let i = 0; i < tiles.length; i++) {
         let t = tiles[i].getElementsByTagName("a")[0].innerText;
@@ -6,6 +7,7 @@ var addTileCheck = function() {
         }
     }
 }
+//checking if theres combinations to be made
 var checkGrid = function() {
     for (let i = 0; i < totalRows; i++) {
         let r = document.getElementsByClassName("row" + i);
